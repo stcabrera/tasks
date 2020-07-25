@@ -12,9 +12,9 @@ let data = [{
 }]
 
 let retrieved = localStorage.getItem('data');
-if (retrieved === null) {
 
-    let jsonData = JSON.stringify(data)
-    localStorage.setItem('data', jsonData)
+/*
+let jsonData = JSON.stringify(data)
+localStorage.setItem('data', jsonData)
 
-}
+*/

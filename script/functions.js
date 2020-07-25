@@ -128,30 +128,13 @@ function deleteTask() {
         let confirmDelete = confirm('Wollen Sie diesen Task wirklich löschen');
         if (confirmDelete == true) {
             const itemKey = event.target.parentElement.parentElement.parentElement.parentElement.dataset.id;
-            console.log(itemKey)
-
             let data;
             let storedTasks = localStorage.getItem('data');
             let xxx = JSON.parse(storedTasks);
             data = xxx;
-            console.log(data)
-
-            var filtered = data.filter(task => task.id != itemKey);
-            console.log(filtered)
+            let filtered = data.filter(task => task.id != itemKey);
             let newData = JSON.stringify(filtered)
             localStorage.setItem('data', newData)
-
-
-
-
-
-
-
-
-
-
-
-
 
             setTimeout(getData, 10)
         }
@@ -164,9 +147,32 @@ function checkTask(event) {
         console.log(itemKey)
 
         if (event.target.classList.contains('false')) {
+            let data;
+            let storedTasks = localStorage.getItem('data');
+            let xxx = JSON.parse(storedTasks);
+            data = xxx;
+            data.forEach((item, index) => {
+                if (item.id == itemKey)
+                    data[index].done = true
+            })
+
+            let newData = JSON.stringify(data)
+            localStorage.setItem('data', newData)
+
             setTimeout(getData, 50)
 
         } else {
+            let data;
+            let storedTasks = localStorage.getItem('data');
+            let xxx = JSON.parse(storedTasks);
+            data = xxx;
+            data.forEach((item, index) => {
+                if (item.id == itemKey)
+                    data[index].done = false
+            })
+
+            let newData = JSON.stringify(data)
+            localStorage.setItem('data', newData)
             setTimeout(getData, 50)
         }
     }
