@@ -41,14 +41,12 @@ function getTemplate() {
 };
 
 function pushData() {
-    // alte tasks auslesen
     let timestamp = new Date().getTime();
     let data;
     let storedTasks = localStorage.getItem('data');
     let xxx = JSON.parse(storedTasks);
     data = xxx;
 
-    // neuer Task pushen
     const importanceValue = document.querySelector('#importance').value;
     let dDate = new Date(taskDuedate.value);
     let day = dDate.getDate();
@@ -82,7 +80,6 @@ function pushData() {
 
     getData()
 };
-
 
 function deleteTask() {
     if (event.target.classList.contains('delete')) {
@@ -155,9 +152,43 @@ function editTask(event) {
         taskTitle.value = fillTitle;
         taskNote.value = fillNote;
         taskDuedate.value = fillDuedate;
+
+        localStorage.setItem('id', itemKey)
     }
 };
 
 function updateTask() {
+    const itemKey = localStorage.getItem('id');
+    const importanceValue = document.querySelector('#importance').value;
+    let dDate = new Date(taskDuedate.value);
+    let day = dDate.getDate();
+    let year = dDate.getFullYear();
+    let today = new Date().toLocaleDateString('de-DE');
+    let data;
+    let storedTasks = localStorage.getItem('data');
+    let xxx = JSON.parse(storedTasks);
+    data = xxx;
+    data.forEach((item, index) => {
+        if (item.id == itemKey) {
+            data[index].title = taskTitle.value
+            data[index].note = taskNote.value
+            data[index].importance = (() => {
+                if (importanceValue === 'high') { return 3 + ' high' };
+                if (importanceValue === 'medium') { return 2 + ' medium' };
+                if (importanceValue === 'low') { return 1 + ' low' };
+            })()
+            data[index].dueDate = taskDuedate.value
+            data[index].dueDateDay = day
+            data[index].dueDateMonth = months[dDate.getMonth()]
+            data[index].dueDateYear = year
+            data[index].created = today
+            data[index].done = false
+        }
 
+
+    })
+
+    let newData = JSON.stringify(data)
+    localStorage.setItem('data', newData)
+    setTimeout(getData, 10)
 }
