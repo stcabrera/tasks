@@ -1,6 +1,4 @@
-let data = [];
-let taskData = { tasks: data }
-const server = 'http://localhost:3000/tasks/';
+let taskData;
 const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 let taskTitle = document.querySelector('#title');
 let taskNote = document.querySelector('#note');
@@ -9,10 +7,12 @@ let taskImportance = document.querySelector('#importance');
 
 function getData() {
     let retrieved = localStorage.getItem('data');
-    let xxx = JSON.parse(retrieved);
-    console.log(xxx)
-
-
+    if (retrieved != null) {
+        let xxx = JSON.parse(retrieved);
+        taskData = xxx
+        console.log(taskData)
+        getTemplate();
+    }
 }
 getData();
 
@@ -40,14 +40,18 @@ function getTemplate() {
 };
 
 function pushData() {
+    // alte tasks auslesen
+    let data;
+    let storedTasks = localStorage.getItem('data');
+    let xxx = JSON.parse(storedTasks);
+    data = xxx;
 
+    // neuer Task pushen
     const importanceValue = document.querySelector('#importance').value;
     let dDate = new Date(taskDuedate.value);
     let day = dDate.getDate();
     let year = dDate.getFullYear();
     let today = new Date().toLocaleDateString('de-DE');
-
-
     let xdata = {
         "title": taskTitle.value,
         "note": taskNote.value,
@@ -63,25 +67,63 @@ function pushData() {
         "created": today,
         "done": false
     };
-    //let storeData = { data }
-    data.push(xdata);
-    //console.log(data)
-    console.log(taskData)
-    localStorage.setItem('data', JSON.stringify(taskData))
+    if (storedTasks != null) {
+        data.push(xdata)
+        let newData = JSON.stringify(data)
+        localStorage.setItem('data', newData)
+    } else {
+        let newData = JSON.stringify(data)
+        localStorage.setItem('data', newData)
+    }
 
-
-
-    setTimeout(getData, 10)
+    getData()
 };
 
+function getDatafromStorage() {
+
+}
+/*
+function pushData() {
+    getDatafromStorage();
+ 
+     const importanceValue = document.querySelector('#importance').value;
+     let dDate = new Date(taskDuedate.value);
+     let day = dDate.getDate();
+     let year = dDate.getFullYear();
+     let today = new Date().toLocaleDateString('de-DE');
+ 
+ 
+     let xdata = {
+         "title": taskTitle.value,
+         "note": taskNote.value,
+         "importance": (() => {
+             if (importanceValue === 'high') { return 3 + ' high' };
+             if (importanceValue === 'medium') { return 2 + ' medium' };
+             if (importanceValue === 'low') { return 1 + ' low' };
+         })(),
+         "dueDate": taskDuedate.value,
+         "dueDateDay": day,
+         "dueDateMonth": months[dDate.getMonth()],
+         "dueDateYear": year,
+         "created": today,
+         "done": false
+     };
+     //let storeData = { data }
+     taskData = xdata;
+     //console.log(data)
+     console.log(taskData)
+     localStorage.setItem('data', JSON.stringify(taskData))
+ 
+ 
+ 
+     setTimeout(getData, 10)
+ };
+*/
 function deleteTask() {
     if (event.target.classList.contains('delete')) {
         let confirmDelete = confirm('Wollen Sie diesen Task wirklich löschen');
         if (confirmDelete == true) {
             const itemKey = event.target.parentElement.parentElement.parentElement.parentElement.dataset.id;
-            fetch(server + itemKey, {
-                method: 'DELETE'
-            })
             setTimeout(getData, 10)
         }
     }
@@ -91,20 +133,9 @@ function checkTask(event) {
     if (event.target.classList.contains('check')) {
         const itemKey = event.target.parentElement.parentElement.parentElement.dataset.id;
         if (event.target.classList.contains('false')) {
-            fetch(server + itemKey, {
-                method: 'PATCH',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ "done": true }),
-            })
-
             setTimeout(getData, 50)
 
         } else {
-            fetch(server + itemKey, {
-                method: 'PATCH',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ "done": false }),
-            })
             setTimeout(getData, 50)
         }
     }
@@ -135,27 +166,23 @@ function updateTask() {
     const importanceValue = document.querySelector('#importance').value;
     const dDate = new Date(taskDuedate.value);
     let day = dDate.getDate();
-    let month = dDate.getMonth() + 1;
     let year = dDate.getFullYear();
 
-    fetch(server + itemKey, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-            "title": taskTitle.value,
-            "note": taskNote.value,
-            "importance": (() => {
-                if (importanceValue === 'high') { return 3 + ' high' };
-                if (importanceValue === 'medium') { return 2 + ' medium' };
-                if (importanceValue === 'low') { return 1 + ' low' };
-            })(),
-            "dueDate": taskDuedate.value,
-            "dueDateDay": day,
-            "dueDateMonth": months[dDate.getMonth()],
-            "dueDateYear": year,
-            "created": new Date().toLocaleDateString('de-DE'),
-            "done": false
-        })
-    });
+    let content = JSON.stringify({
+        "title": taskTitle.value,
+        "note": taskNote.value,
+        "importance": (() => {
+            if (importanceValue === 'high') { return 3 + ' high' };
+            if (importanceValue === 'medium') { return 2 + ' medium' };
+            if (importanceValue === 'low') { return 1 + ' low' };
+        })(),
+        "dueDate": taskDuedate.value,
+        "dueDateDay": day,
+        "dueDateMonth": months[dDate.getMonth()],
+        "dueDateYear": year,
+        "created": new Date().toLocaleDateString('de-DE'),
+        "done": false
+    })
+
     setTimeout(getData, 10)
 };
