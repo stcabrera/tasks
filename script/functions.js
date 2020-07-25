@@ -75,6 +75,7 @@ function pushData() {
         let newData = JSON.stringify(data)
         localStorage.setItem('data', newData)
     } else {
+        console.log('stored tasks null')
         let newData = JSON.stringify(data)
         localStorage.setItem('data', newData)
     }

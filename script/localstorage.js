@@ -7,14 +7,14 @@ let data = [{
     "dueDateMonth": 'months',
     "dueDateYear": 'year',
     "created": 'today',
-    "done": false
+    "done": false,
+    "id": '1111'
 }]
+
 let retrieved = localStorage.getItem('data');
 if (retrieved === null) {
+
     let jsonData = JSON.stringify(data)
     localStorage.setItem('data', jsonData)
+
 }
-
-
-let timestamp = new Date().getTime();
-console.log(timestamp)
