@@ -1,0 +1,27 @@
+{
+    "short_name": "Notes",
+    "name": "Notes",
+    "icons": [{
+            "src": "/img/notes.png",
+            "type": "image/jpg",
+            "sizes": "48x48"
+        },
+        {
+            "src": "./img/notes2.png",
+            "type": "image/png",
+            "sizes": "96x96"
+        },
+        {
+            "src": "img/notes3.png",
+            "type": "image/png",
+            "sizes": "192x192"
+        }
+
+    ],
+    "start_url": "index.html",
+    "theme_color": "#2a2a2a",
+    "background_color": "#2a2a2a",
+    "display": "fullscreen",
+    "orientation": "landscape"
+
+}

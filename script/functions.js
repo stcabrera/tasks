@@ -10,8 +10,9 @@ function getData() {
     if (retrieved != null) {
         let xxx = JSON.parse(retrieved);
         taskData = xxx
-        console.log(taskData)
         getTemplate();
+    } else {
+        localStorage.setItem('data', '[]');
     }
 }
 getData();
@@ -42,7 +43,6 @@ function getTemplate() {
 function pushData() {
     // alte tasks auslesen
     let timestamp = new Date().getTime();
-
     let data;
     let storedTasks = localStorage.getItem('data');
     let xxx = JSON.parse(storedTasks);
@@ -83,46 +83,7 @@ function pushData() {
     getData()
 };
 
-function getDatafromStorage() {
 
-}
-/*
-function pushData() {
-    getDatafromStorage();
- 
-     const importanceValue = document.querySelector('#importance').value;
-     let dDate = new Date(taskDuedate.value);
-     let day = dDate.getDate();
-     let year = dDate.getFullYear();
-     let today = new Date().toLocaleDateString('de-DE');
- 
- 
-     let xdata = {
-         "title": taskTitle.value,
-         "note": taskNote.value,
-         "importance": (() => {
-             if (importanceValue === 'high') { return 3 + ' high' };
-             if (importanceValue === 'medium') { return 2 + ' medium' };
-             if (importanceValue === 'low') { return 1 + ' low' };
-         })(),
-         "dueDate": taskDuedate.value,
-         "dueDateDay": day,
-         "dueDateMonth": months[dDate.getMonth()],
-         "dueDateYear": year,
-         "created": today,
-         "done": false
-     };
-     //let storeData = { data }
-     taskData = xdata;
-     //console.log(data)
-     console.log(taskData)
-     localStorage.setItem('data', JSON.stringify(taskData))
- 
- 
- 
-     setTimeout(getData, 10)
- };
-*/
 function deleteTask() {
     if (event.target.classList.contains('delete')) {
         let confirmDelete = confirm('Wollen Sie diesen Task wirklich löschen');
@@ -144,7 +105,6 @@ function deleteTask() {
 function checkTask(event) {
     if (event.target.classList.contains('check')) {
         const itemKey = event.target.parentElement.parentElement.parentElement.dataset.id;
-        console.log(itemKey)
 
         if (event.target.classList.contains('false')) {
             let data;
@@ -197,3 +157,7 @@ function editTask(event) {
         taskDuedate.value = fillDuedate;
     }
 };
+
+function updateTask() {
+
+}

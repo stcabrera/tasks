@@ -54,5 +54,5 @@ function clearFilterButtons() {
 
 (() => {
     let copyDiv = document.querySelector('.copy');
-    copyDiv.innerHTML = '©' + year + ' Stephan Cabrera <br> CASFEE2020 <br> Projekt 1'
+    copyDiv.innerHTML = '©' + year + ' Stephan Cabrera'
 })();
