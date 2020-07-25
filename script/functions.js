@@ -41,6 +41,8 @@ function getTemplate() {
 
 function pushData() {
     // alte tasks auslesen
+    let timestamp = new Date().getTime();
+
     let data;
     let storedTasks = localStorage.getItem('data');
     let xxx = JSON.parse(storedTasks);
@@ -65,7 +67,8 @@ function pushData() {
         "dueDateMonth": months[dDate.getMonth()],
         "dueDateYear": year,
         "created": today,
-        "done": false
+        "done": false,
+        "id": timestamp
     };
     if (storedTasks != null) {
         data.push(xdata)
@@ -124,6 +127,31 @@ function deleteTask() {
         let confirmDelete = confirm('Wollen Sie diesen Task wirklich löschen');
         if (confirmDelete == true) {
             const itemKey = event.target.parentElement.parentElement.parentElement.parentElement.dataset.id;
+            console.log(itemKey)
+
+            let data;
+            let storedTasks = localStorage.getItem('data');
+            let xxx = JSON.parse(storedTasks);
+            data = xxx;
+            console.log(data)
+
+            var filtered = data.filter(task => task.id != itemKey);
+            console.log(filtered)
+            let newData = JSON.stringify(filtered)
+            localStorage.setItem('data', newData)
+
+
+
+
+
+
+
+
+
+
+
+
+
             setTimeout(getData, 10)
         }
     }
@@ -132,6 +160,8 @@ function deleteTask() {
 function checkTask(event) {
     if (event.target.classList.contains('check')) {
         const itemKey = event.target.parentElement.parentElement.parentElement.dataset.id;
+        console.log(itemKey)
+
         if (event.target.classList.contains('false')) {
             setTimeout(getData, 50)
 
@@ -159,30 +189,4 @@ function editTask(event) {
         taskNote.value = fillNote;
         taskDuedate.value = fillDuedate;
     }
-};
-
-function updateTask() {
-    const itemKey = document.querySelector('#key').value;
-    const importanceValue = document.querySelector('#importance').value;
-    const dDate = new Date(taskDuedate.value);
-    let day = dDate.getDate();
-    let year = dDate.getFullYear();
-
-    let content = JSON.stringify({
-        "title": taskTitle.value,
-        "note": taskNote.value,
-        "importance": (() => {
-            if (importanceValue === 'high') { return 3 + ' high' };
-            if (importanceValue === 'medium') { return 2 + ' medium' };
-            if (importanceValue === 'low') { return 1 + ' low' };
-        })(),
-        "dueDate": taskDuedate.value,
-        "dueDateDay": day,
-        "dueDateMonth": months[dDate.getMonth()],
-        "dueDateYear": year,
-        "created": new Date().toLocaleDateString('de-DE'),
-        "done": false
-    })
-
-    setTimeout(getData, 10)
 };

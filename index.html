@@ -9,7 +9,7 @@
     <script id="task-list-template" type="text/x-handlebars-template">
         <ul id="list" class="grid">
             {{#each this}}
-            <li id="{{_id}}" class="listItem {{importance}}" data-id="{{_id}}" data-date="{{dueDate}}">
+            <li id="{{_id}}" class="listItem {{importance}}" data-id="{{id}}" data-date="{{dueDate}}">
                 <div class="calendar">
                     <div class="calendarDay"> {{dueDateDay}} </div>
                     <div class="calendarMonth"> {{dueDateMonth}} </div>
@@ -34,7 +34,7 @@
     <script id="task-list-done-template" type="text/x-handlebars-template">
         <ul id="list" class="grid">
             {{#each this}} {{#if done}}
-            <li id="{{_id}}" class="listItem {{importance}}" data-id="{{_id}}" data-date="{{dueDate}}">
+            <li id="{{_id}}" class="listItem {{importance}}" data-id="{{id}}" data-date="{{dueDate}}">
                 <div class="calendar">
                     <div class="calendarDay"> {{dueDateDay}} </div>
                     <div class="calendarMonth"> {{dueDateMonth}} </div>
@@ -59,7 +59,7 @@
     <script id="task-list-undone-template" type="text/x-handlebars-template">
         <ul id="list" class="grid">
             {{#each this}} {{#unless done}}
-            <li id="{{_id}}" class="listItem {{importance}}" data-id="{{_id}}" data-date="{{dueDate}}">
+            <li id="{{_id}}" class="listItem {{importance}}" data-id="{{id}}" data-date="{{dueDate}}">
                 <div class="calendar">
                     <div class="calendarDay"> {{dueDateDay}} </div>
                     <div class="calendarMonth"> {{dueDateMonth}} </div>
